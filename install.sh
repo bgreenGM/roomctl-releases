@@ -1,9 +1,11 @@
 #!/bin/bash
 # The one-line installer for a room Mac, published as install.sh in the public download repo (packages only,
-# never the source; deploy/release.sh keeps both up to date). As the Mac's admin, in Terminal:
+# never the source; deploy/release.sh keeps both up to date). As the Mac's admin, best over SSH from IT's own Mac
+# (Remote Login on; setup's prompts come to that Terminal):
 #
-#   curl -fsSL https://raw.githubusercontent.com/bgreenGM/roomctl-releases/main/install.sh | sudo bash -s -- --test-mac
+#   ssh -t <admin>@<address> 'curl -fsSL https://raw.githubusercontent.com/bgreenGM/roomctl-releases/main/install.sh | sudo bash -s -- --test-mac'
 #
+# or the same curl line in Terminal at the Mac.
 # It downloads the newest package (with --test-mac the newest test release, else the newest final one), refuses
 # it unless its roomctl is signed with the roomctl certificate, and starts that package's deploy/setup.sh with the
 # same options. Run the same line again for setup's Part 2. The room keys come from the build Mac (provision.sh).
