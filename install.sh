@@ -27,6 +27,9 @@ main() {
     curl -fsSL "https://github.com/$repo/releases/download/$tag/roomctl-$version.tar.gz" | tar -xz -C "$dir"
     codesign --verify --strict -R="$requirement" "$dir/roomctl-$version/roomctl" 2>/dev/null ||
         { echo "install.sh: that package's roomctl isn't signed with the roomctl certificate, so it wasn't installed." >&2; exit 1; }
+    # Its scripts run as root next, and setup lets its SSH key in: each must be one its signed roomctl was built with.
+    "$dir/roomctl-$version/roomctl" verify-package "$dir/roomctl-$version" >/dev/null ||
+        { echo "install.sh: that package's files aren't the ones its roomctl was built with, so none of it ran." >&2; exit 1; }
     echo "roomctl $version downloaded, and it's genuine. Starting setup."
     # Setup asks questions: give it the keyboard, not this script's pipe.
     exec "$dir/roomctl-$version/deploy/setup.sh" "$@" </dev/tty
